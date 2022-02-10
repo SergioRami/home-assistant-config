@@ -1,0 +1,134 @@
+title: Casa Ronnete
+views:
+  - title: Resumen
+    path: resumen
+    theme: ''
+    badges:
+      - entity: person.watchout
+      - entity: person.mirian
+    cards:
+      - type: custom:pvpc-hourly-pricing-card
+        entity: sensor.esios_pvpc
+      - type: entities
+        entities:
+          - entity: light.habitacion
+          - entity: light.habitacion_azul
+          - entity: switch.shelly_shsw_1_483fda822ac9
+          - entity: switch.shelly_shsw_1_483fda82a8c9
+          - entity: switch.shelly_shsw_1_483fda82b789
+          - entity: switch.lavadora_1
+          - entity: switch.lampara_del_salon_1
+          - entity: switch.lavavajillas_1
+      - type: custom:weather-card
+        entity: weather.aemet_daily
+        number_of_forecasts: '5'
+        name: AEMET
+      - type: custom:scheduler-card
+        include:
+          - switch.smart_switch_20072932809313251h5648e1e928b7fb_outlet
+        exclude: []
+      - type: custom:xiaomi-vacuum-map-card
+        title: Xiaomi Vacuum Map Card
+        language: es
+        preset_name: Live map
+        entity: vacuum.pumba
+        map_source:
+          camera: camera.xiaomi_cloud_map_extractor
+        calibration_source:
+          camera: true
+  - title: Plano
+    icon: mdi:floor-plan
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:floorplan-card
+                full_height: true
+                full_width: true
+                config:
+                  image: /local/floorplan/home_v2.svg
+                  stylesheet: /local/floorplan/home_v1.css
+                  defaults:
+                    hover_action: hover-info
+                    tap_action: more-info
+                  rules:
+                    - entity: switch.shelly_shsw_1_483fda822ac9
+                      element: light.pasillo
+                      tap_action: toggle
+                      state_action:
+                        action: call-service
+                        service: floorplan.class_set
+                        service_data: switch-${entity.state}
+                    - entity: switch.shelly_shsw_1_483fda82a8c9
+                      element: light.sofa
+                      tap_action: toggle
+                      state_action:
+                        action: call-service
+                        service: floorplan.class_set
+                        service_data: switch-${entity.state}
+                    - entity: switch.shelly_shsw_1_483fda82b789
+                      element: light.salon_mesa
+                      tap_action: toggle
+                      state_action:
+                        action: call-service
+                        service: floorplan.class_set
+                        service_data: switch-${entity.state}
+                    - entity: switch.lampara_del_salon_1
+                      element: switch.lampara_salon
+                      tap_action: toggle
+                      state_action:
+                        action: call-service
+                        service: floorplan.class_set
+                        service_data: switch-${entity.state}
+                    - entity: light.habitacion
+                      element: light.habitacion
+                      tap_action: toggle
+                      state_action:
+                        action: call-service
+                        service: floorplan.class_set
+                        service_data: switch-${entity.state}
+                    - entity: light.habitacion_azul
+                      element: light.habitacion_azul
+                      tap_action: toggle
+                      state_action:
+                        action: call-service
+                        service: floorplan.class_set
+                        service_data: switch-${entity.state}
+                    - entity: sensor.ble_temperature_salon
+                      element: sensor.temperatura_salon
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data:
+                          text: |
+                            >
+                            return entity.state + " ºC";
+                    - entity: sensor.ble_temperature_dormitorio
+                      element: sensor.temperatura_dormitorio
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data:
+                          text: |
+                            >
+                            return entity.state + " ºC";
+                    - entity: sensor.ble_temperature_habitacion
+                      element: sensor.temperatura_habitacion
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data:
+                          text: |
+                            >
+                            return entity.state + " ºC";
+                    - entity: sensor.ble_temperature_gimnasio
+                      element: sensor.temperatura_gimnasio
+                      state_action:
+                        action: call-service
+                        service: floorplan.text_set
+                        service_data:
+                          text: |
+                            >
+                            return entity.state + " ºC";

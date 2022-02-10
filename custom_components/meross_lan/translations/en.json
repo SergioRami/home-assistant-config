@@ -1,0 +1,75 @@
+{
+    "title": "Meross LAN",
+    "config": {
+        "flow_title": "Meross {device_type}",
+        "abort": {
+            "no_devices_found": "No devices found on the network",
+            "single_instance_allowed": "Already configured. Only a single configuration possible."
+        },
+        "error": {
+            "invalid_key": "Key error: proceed to retrieve from Meross account",
+            "already_configured_device": "Device is already configured",
+            "cannot_connect": "Unable to connect",
+            "invalid_auth": "Authentication error"
+          },
+        "step": {
+            "user": {
+                "title": "Meross LAN",
+                "description": "Setup meross device",
+                "data": {
+                    "host": "Device host address",
+                    "key": "Device key"
+                }
+            },
+            "hub": {
+                "title": "Meross LAN MQTT Hub",
+                "description": "Configure global Meross LAN settings",
+                "data": {
+                    "key": "Device key"
+                }
+            },
+            "retrievekey": {
+                "title": "Device key retrieve",
+                "description": "Login to your Meross account to retrieve the device key",
+                "data": {
+                    "username": "Meross login",
+                    "password": "Meross password"
+                }
+            },
+            "device": {
+                "title": "Device configuration",
+                "description": "Type: {device_type}\nUUID: {device_id}",
+                "data": {
+                }
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "hub": {
+                "title": "Meross LAN MQTT Hub",
+                "description": "Configure global Meross LAN settings",
+                "data": {
+                    "key": "Device key"
+                }
+            },
+            "device": {
+                "title": "Device configuration",
+                "description": "Type: {device_type}\nUUID: {device_id}\nHost: {host}\n\n{payload}",
+                "data": {
+                    "key": "Device key",
+                    "protocol": "Connection protocol",
+                    "polling_period": "Polling period",
+                    "timezone": "Device time zone",
+                    "voltageRatio": "voltageRatio",
+                    "electricityRatio": "electricityRatio",
+                    "signalOpen": "Cover open timeout (sec)",
+                    "signalClose": "Cover close timeout (sec)",
+                    "trace": "Activate device debug tracing (for 10 min)",
+                    "all": "Appliance.System.All",
+                    "ability": "Appliance.System.Ability"
+                }
+            }
+        }
+    }
+}

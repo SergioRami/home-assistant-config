@@ -1,0 +1,53 @@
+- sensor:
+    - name: "Coste PVPC variable (horario)"
+      unit_of_measurement: '€/kWh'
+      state: >
+        {% set IVA = 1.10 |float %}
+        {% set imp_elec = 1.05112696 |float %}
+        {{ ((states('sensor.esios_pvpc') | float) * imp_elec * IVA )  | round(6) }}
+    - name: "Coste PVPC fijo (horario)"
+      unit_of_measurement: '€'
+      state: >
+        {% set term_fijo = 0.014621075 |float %}
+        {% set alquiler_contador = 0.001109583 |float %}
+        {{ term_fijo * alquiler_contador | round(6) }}
+    - name: "Consumo Casa Coste Variable (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.consumo_casa_hourly_energy') | float * (states('sensor.coste_pvpc_variable_horario') | float) )  | round(6) }}
+    - name: "Consumo Casa Coste Total (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.consumo_casa_coste_variable_hora_actual') | float + (states('sensor.coste_pvpc_fijo_horario') | float) )  | round(6) }}
+    - name: "Lampara Salon Coste Variable (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.lampara_salon_hourly_energy') | float * (states('sensor.coste_pvpc_variable_horario') | float) )  | round(6) }}
+    - name: "Lampara Salon Coste Total (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.lampara_salon_coste_variable_hora_actual') | float + (states('sensor.coste_pvpc_fijo_horario') | float) )  | round(6) }}
+    - name: "A/C Coste Variable (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.a_c_hourly_energy') | float * (states('sensor.coste_pvpc_variable_horario') | float) )  | round(6) }}
+    - name: "A/C Coste Total (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.a_c_coste_variable_hora_actual') | float + (states('sensor.coste_pvpc_fijo_horario') | float) )  | round(6) }}
+    - name: "Lavadora Coste Variable (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.lavadora_hourly_energy') | float * (states('sensor.coste_pvpc_variable_horario') | float) )  | round(6) }}
+    - name: "Lavadora Coste Total (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.lavadora_coste_variable_hora_actual') | float + (states('sensor.coste_pvpc_fijo_horario') | float) )  | round(6) }}
+    - name: "Lavavajillas Coste Variable (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.lavavajillas_hourly_energy') | float * (states('sensor.coste_pvpc_variable_horario') | float) )  | round(6) }}
+    - name: "Lavavajillas Coste Total (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.lavavajillas_coste_variable_hora_actual') | float + (states('sensor.coste_pvpc_fijo_horario') | float) )  | round(6) }}

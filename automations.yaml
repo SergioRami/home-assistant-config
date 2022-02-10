@@ -1,0 +1,64 @@
+- id: '1640605565531'
+  alias: Encender lavavajillas
+  description: Encender lavavajillas en la hora más barata del día
+  trigger:
+  - platform: state
+    entity_id: sensor.esios_pvpc
+  condition:
+  - condition: template
+    value_template: '{{ states.sensor.esios_pvpc.state|float == states.sensor.esios_pvpc.attributes.min_price|float
+      }}'
+  action:
+  - service: notify.mobile_app_sergio_poco
+    data:
+      title: Encendiendo el lavavajillas
+      message: Arrancando el lavavajillas a las {{ now().hour }} con precio {{ states.sensor.esios_pvpc.state
+        }}
+  - service: switch.turn_on
+    target:
+      entity_id: switch.lavavajillas_1
+  mode: single
+- id: '1644080613345'
+  alias: Encender Pasillo con movimiento
+  description: Encender Pasillo con movimiento
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.shelly_shmos_01_60a4239939fe_motion
+    id: Cuando se detecte movimiento
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ states.sun.sun.state != ''above_horizon'' }}'
+  action:
+  - type: turn_on
+    device_id: 5358ab846a66b7f2c7585ced6b0e3b36
+    entity_id: switch.shelly_shsw_1_483fda822ac9
+    domain: switch
+  mode: single
+- id: '1644349175019'
+  alias: Apagar Pasillo después de 10 min
+  description: Apagar Pasillo después de 10 min
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: 5358ab846a66b7f2c7585ced6b0e3b36
+    entity_id: switch.shelly_shsw_1_483fda822ac9
+    domain: switch
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 5358ab846a66b7f2c7585ced6b0e3b36
+    entity_id: switch.shelly_shsw_1_483fda822ac9
+    domain: switch
+  mode: single

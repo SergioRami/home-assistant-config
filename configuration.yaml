@@ -1,0 +1,271 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Basic configuration
+homeassistant:  
+  name: Casa Ronnete
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: !secret home_elevation
+  unit_system: metric
+  currency: EUR
+  time_zone: "Europe/Madrid"
+  external_url: !secret external_url
+  internal_url: !secret internal_url
+  customize_glob:
+     sensor.*_energy_meter:
+      unit_of_measurement: kWh
+      device_class: energy
+      state_class: total_increasing
+
+# Manage Lovelace UI from YAML
+lovelace: 
+  mode: yaml
+  resources:
+    [ { url: /hacsfiles/button-card/button-card.js,                                type: module },
+      { url: /hacsfiles/ha-floorplan/floorplan.js,                                 type: module },
+      { url: /hacsfiles/lovelace-card-mod/card-mod.js,                             type: module },
+      { url: /hacsfiles/lovelace-layout-card/layout-card.js,                       type: module },
+      { url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js, type: module },
+      { url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js,                 type: module },
+      { url: /hacsfiles/pvpc-hourly-pricing-card/pvpc-hourly-pricing-card.js,      type: module },
+      { url: /hacsfiles/scheduler-card/scheduler-card.js,                          type: module },
+      { url: /hacsfiles/swipe-card/swipe-card.js,                                  type: module },
+      { url: /hacsfiles/weather-card/weather-card.js,                              type: module } ]
+
+# Add the IP address of the proxy server
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - !secret http_trusted_networks
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
+
+# Google Assistant
+google_assistant:
+  project_id: !secret google_assistant_project_id
+  service_account: !include google-assistant-details.json
+  report_state: true
+
+# Spotify
+spotify:
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_client_secret
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+# Shelly 
+shelly:
+  cloud_auth_key: !secret shelly_cloud_auth_key
+  cloud_server: !secret shelly_cloud_server
+
+# Xiaomi Miio Roborock S50
+camera:
+  - platform: xiaomi_cloud_map_extractor
+    host: !secret xiaomi_vacuum_host
+    token: !secret xiaomi_vacuum_token
+    username: !secret xiaomi_cloud_username
+    password: !secret xiaomi_cloud_password
+    country: "de"
+    colors:
+      color_path: [255, 255, 255]
+    name: xiaomi_cloud_map_extractor
+    draw: ['all']
+    map_transformation:
+      scale: 1
+      trim:
+        top: 20
+        bottom: 20
+        left: 20
+        right: 20
+    attributes:
+      - calibration_points
+      - charger
+      - cleaned_rooms
+      - country
+      - goto
+      - goto_path
+      - goto_predicted_path
+      - image
+      - is_empty
+      - map_name
+      - no_go_areas
+      - no_mopping_areas
+      - obstacles
+      - ignored_obstacles
+      - obstacles_with_photo
+      - ignored_obstacles_with_photo
+      - path
+      - room_numbers
+      - rooms
+      - vacuum_position
+      - vacuum_room
+      - vacuum_room_name
+      - walls
+      - zones
+    scan_interval:
+      seconds: 300
+    auto_update: false
+    store_map_raw: false
+    force_api: xiaomi
+
+# Bluetooth device trackers
+device_tracker:
+  # Ping
+  - platform: ping
+    interval_seconds: 30
+    consider_home: 180
+    hosts:
+      poco_x3_pro: !secret poco_x3_pro_ip
+      redmi_note_7_mirian: !secret redmi_note_7_mirian_ip
+
+# Mijia temperature sensor
+ble_monitor:
+   decimals: 1
+   period: 60
+   log_spikes: False
+   use_median: False
+   active_scan: False
+   discovery: True
+   restore_state: False
+   report_unknown: False
+   devices:
+     - mac: !secret mijia_habitacion_device_mac
+       name: 'Habitación'
+       encryption_key: !secret mijia_habitacion_encryption_key
+       temperature_unit: C
+     - mac: !secret mijia_dormitorio_device_mac
+       name: 'Dormitorio'
+       encryption_key: !secret mijia_dormitorio_encryption_key
+       temperature_unit: C
+     - mac: !secret mijia_salon_device_mac
+       name: 'Salón'
+       encryption_key: !secret mijia_salon_encryption_key
+       temperature_unit: C
+     - mac: !secret mijia_gimnasio_device_mac
+       name: 'Gimnasio'
+       encryption_key: !secret mijia_gimnasio_encryption_key
+       temperature_unit: C
+
+# InfluxDB
+influxdb:
+  database: !secret influxdb_database
+  username: !secret influxdb_username
+  password: !secret influxdb_password
+  max_retries: 3
+  exclude:
+    domains:
+      - automation
+      - zone
+      - person
+      - sun
+  tags:
+    instance: prod
+    source: home-assistant
+
+# Logger 
+logger:
+  default: debug
+
+# Utility Meter
+utility_meter:
+  consumo_casa_hourly_energy:
+    source: sensor.consumo_casa_energy_meter
+    cycle: hourly
+  consumo_casa_daily_energy:
+    source: sensor.consumo_casa_energy_meter
+    cycle: daily
+  consumo_casa_monthly_energy:
+    source: sensor.consumo_casa_energy_meter
+    cycle: monthly
+  consumo_casa_energy_cost:
+    source: sensor.consumo_casa_coste_total_hora_actual
+    cycle: monthly
+  a_c_hourly_energy:
+    source: sensor.a_c_energy_meter
+    cycle: hourly
+  a_c_daily_energy:
+    source: sensor.a_c_energy_meter
+    cycle: daily
+  a_c_monthly_energy:
+    source: sensor.a_c_energy_meter
+    cycle: monthly
+  a_c_energy_cost:
+    source: sensor.a_c_coste_total_hora_actual
+    cycle: monthly
+  lampara_salon_hourly_energy:
+    source: sensor.lampara_salon_energy_meter
+    cycle: hourly
+  lampara_salon_daily_energy:
+    source: sensor.lampara_salon_energy_meter
+    cycle: daily
+  lampara_salon_monthly_energy:
+    source: sensor.lampara_salon_energy_meter
+    cycle: monthly
+  lampara_salon_energy_cost:
+    source: sensor.lampara_salon_coste_total_hora_actual
+    cycle: monthly
+  lavadora_hourly_energy:
+    source: sensor.lavadora_energy_meter
+    cycle: hourly
+  lavadora_daily_energy:
+    source: sensor.lavadora_energy_meter
+    cycle: daily
+  lavadora_monthly_energy:
+    source: sensor.lavadora_energy_meter
+    cycle: monthly
+  lavadora_energy_cost:
+    source: sensor.lavadora_coste_total_hora_actual
+    cycle: monthly
+  lavavajillas_hourly_energy:
+    source: sensor.lavavajillas_energy_meter
+    cycle: hourly
+  lavavajillas_daily_energy:
+    source: sensor.lavavajillas_energy_meter
+    cycle: daily
+  lavavajillas_monthly_energy:
+    source: sensor.lavavajillas_energy_meter
+    cycle: monthly
+  lavavajillas_energy_cost:
+    source: sensor.lavavajillas_coste_total_hora_actual
+    cycle: monthly
+
+# Energy meter Riemann
+sensor:
+  - platform: integration
+    source: sensor.aire_acondicionado_2
+    name: A/C Energy Meter
+    unit_prefix: k
+    round: 3
+  - platform: integration
+    source: sensor.lampara_del_salon_2
+    name: Lampara Salon Energy Meter
+    unit_prefix: k
+    round: 3
+  - platform: integration
+    source: sensor.lavadora_2
+    name: Lavadora Energy Meter
+    unit_prefix: k
+    round: 3
+  - platform: integration
+    source: sensor.lavavajillas_2
+    name: Lavavajillas Energy Meter
+    unit_prefix: k
+    round: 3
+  - platform: integration
+    source: sensor.shelly_shem_e458b6_2_current_consumption
+    name: Consumo Casa Energy Meter
+    unit_prefix: k
+    round: 3
+
+binary_sensor: !include binary_sensor.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+template: !include sensor.yaml
+scene: !include scenes.yaml
+frontend:
+  themes: !include_dir_merge_named themes

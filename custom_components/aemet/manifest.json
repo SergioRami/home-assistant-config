@@ -1,0 +1,14 @@
+{
+  "domain": "aemet",
+  "name": "Agencia estatal de meteorologia",
+  "documentation": "https://github.com/outon/HomeAssistant-AEMET",
+  "dependencies": [],
+  "codeowners": ["@outon"],
+  "requirements": [
+    "vincenty",
+    "jsonpath-rw",
+    "jsonpath-rw-ext",
+    "jsonpath_rw",
+    "jsonpath_rw-ext"
+  ]
+}
