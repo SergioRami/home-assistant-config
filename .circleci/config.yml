@@ -14,4 +14,4 @@ jobs:
             python3.6 -m venv .
             source bin/activate
             pip3 install --pre --upgrade homeassistant
-            python -m homeassistant --config /config --script check_config --info all
+            python -m homeassistant --config . --script check_config --info all
