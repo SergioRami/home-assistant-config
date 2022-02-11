@@ -10,6 +10,7 @@ jobs:
           name: Check config
           command: |
             mv secrets-dummy.yaml secrets.yaml
+            mv google-assistant-details-dummy.json google-assistant-details.json
             python3.6 -m venv .
             source bin/activate
             pip3 install --pre --upgrade homeassistant
