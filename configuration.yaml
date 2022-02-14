@@ -19,6 +19,9 @@ homeassistant:
       device_class: energy
       state_class: total_increasing
 
+frontend:
+  themes: !include_dir_merge_named themes
+
 # Manage Lovelace UI from YAML
 lovelace: 
   mode: yaml
@@ -32,7 +35,10 @@ lovelace:
       { url: /hacsfiles/pvpc-hourly-pricing-card/pvpc-hourly-pricing-card.js,      type: module },
       { url: /hacsfiles/scheduler-card/scheduler-card.js,                          type: module },
       { url: /hacsfiles/swipe-card/swipe-card.js,                                  type: module },
-      { url: /hacsfiles/weather-card/weather-card.js,                              type: module } ]
+      { url: /hacsfiles/weather-card/weather-card.js,                              type: module },
+      { url: /hacsfiles/lovelace-mushroom/mushroom.js,                             type: module },
+      { url: /hacsfiles/spotify-card/spotify-card.js,                              type: module },
+      { url: /hacsfiles/mini-media-player/mini-media-player-bundle.js,             type: module } ]
 
 # Add the IP address of the proxy server
 http:
@@ -267,5 +273,3 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 template: !include sensor.yaml
 scene: !include scenes.yaml
-frontend:
-  themes: !include_dir_merge_named themes

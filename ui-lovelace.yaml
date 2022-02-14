@@ -36,6 +36,35 @@ views:
           camera: camera.xiaomi_cloud_map_extractor
         calibration_source:
           camera: true
+      - type: custom:mini-media-player
+        entity: media_player.spotify_sergiorami
+        icon: mdi:spotify
+        artwork: cover
+        hide:
+          volume: true
+          source: true
+          power_state: false
+      #- type: 'custom:spotify-card'
+        #account: <optional> which account to use for spotcast. Defaults to "default"
+        #height: <optional pixels height for the playlist element. If content is larger scrolling will be enabled>
+        #limit: <optional number of playlists to retrieve (default 10)>
+        #device: <optional name of a device to pre-select>
+        #playlist_type: <optional featured|discover-weekly> Change type of playlists shown. Default are your normal playlists.
+        #always_play_random_song: <optional true> Set to start playlists from a random song.
+        #country_code: <optional country code to show featured playlist relevent to a particular country. https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 >
+        #hide_warning: <optional true> Hide warnings if they are displayed.
+        #name: <optional name> Custom title. Leave empty to hide.
+        #display_style: <optional Grid> Change default display style.
+        #grid_covers_per_row: <optional number> Number of covers per row (default 3) in Grid-view.
+        #spotify_entity: <optional> Name of your spotify media player entity if it doesn't start with "spotify"
+        #default_device: <optional> Name of your spotify connect or chromecast device, e.g. "Kitchen"
+        #filter_devices: <optional Array> Hides devices which matches any array entry. The entries have to be regular expressions and are matched against the full device-name. The following are examples
+        #  - .*room <hides all devices ending with room>
+        #  - bath.*,kids.* <hides all devices which start with bath or kids>
+        #known_connect_devices: <optional> List of known Spotify Connect devices, see [Known Spotify Connect devices](Known-Spotify-Connect-devices) section
+        #  - id: The Spotify Connect device id
+        #    name: The name of the device
+        #    entity_id: <optional> The Home Assistant media player entity id of this device (e.g. from Sonos integration)
   - title: Plano
     icon: mdi:floor-plan
     panel: true
