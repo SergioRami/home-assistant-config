@@ -185,8 +185,11 @@ utility_meter:
   consumo_casa_monthly_energy:
     source: sensor.consumo_casa_energy_meter
     cycle: monthly
-  consumo_casa_energy_cost:
-    source: sensor.consumo_casa_coste_total_hora_actual
+  consumo_casa_pvpc_energy_cost:
+    source: sensor.consumo_casa_coste_total_pvpc_hora_actual
+    cycle: monthly
+  consumo_casa_tarifa_compromiso_energy_cost:
+    source: sensor.consumo_casa_coste_total_tarifa_compromiso_hora_actual
     cycle: monthly
   a_c_hourly_energy:
     source: sensor.a_c_energy_meter

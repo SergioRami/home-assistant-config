@@ -10,15 +10,41 @@
       state: >
         {% set term_fijo = 0.014621075 |float %}
         {% set alquiler_contador = 0.001109583 |float %}
-        {{ term_fijo * alquiler_contador | round(6) }}
-    - name: "Consumo Casa Coste Variable (hora actual)"
+        {{ term_fijo + alquiler_contador | round(6) }}
+    - name: "Coste Tarifa Compromiso fijo (horario)"
+      unit_of_measurement: '€'
+      state: >
+        {% set term_fijo_p1 = 0.052578 |float %}
+        {% set term_fijo_p2 = 0.060296 |float %}
+        {% set alquiler_contador = 0.001109583 |float %}
+        {% if is_state_attr('sensor.esios_pvpc', 'period', 'P1') %}
+          {{ term_fijo_p1 + alquiler_contador | round(6) }}
+        {% else %}
+          {{ term_fijo_p2 + alquiler_contador | round(6) }}
+        {% endif %}
+    - name: "Coste Tarifa Compromiso variable (horario)"
+      unit_of_measurement: '€/kWh'
+      state: >
+        {% set IVA = 1.10 |float %}
+        {% set imp_elec = 1.05112696 |float %}
+        {% set term_energia = 0.145151 |float %}
+        {{ term_energia * imp_elec * IVA | round(6) }}
+    - name: "Consumo Casa Coste Variable PVPC (hora actual)"
       unit_of_measurement: '€'
       state: >
         {{ ( states('sensor.consumo_casa_hourly_energy') | float * (states('sensor.coste_pvpc_variable_horario') | float) )  | round(6) }}
-    - name: "Consumo Casa Coste Total (hora actual)"
+    - name: "Consumo Casa Coste Total PVPC (hora actual)"
       unit_of_measurement: '€'
       state: >
-        {{ ( states('sensor.consumo_casa_coste_variable_hora_actual') | float + (states('sensor.coste_pvpc_fijo_horario') | float) )  | round(6) }}
+        {{ ( states('sensor.consumo_casa_coste_variable_pvpc_hora_actual') | float + (states('sensor.coste_pvpc_fijo_horario') | float) )  | round(6) }}
+    - name: "Consumo Casa Coste Variable Tarifa Compromiso (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.consumo_casa_hourly_energy') | float * (states('sensor.coste_tarifa_compromiso_variable_horario') | float) )  | round(6) }}
+    - name: "Consumo Casa Coste Total Tarifa Compromiso (hora actual)"
+      unit_of_measurement: '€'
+      state: >
+        {{ ( states('sensor.consumo_casa_coste_variable_tarifa_compromiso_hora_actual') | float + (states('sensor.coste_tarifa_compromiso_fijo_horario') | float) )  | round(6) }}
     - name: "Lampara Salon Coste Variable (hora actual)"
       unit_of_measurement: '€'
       state: >
